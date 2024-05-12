@@ -1,0 +1,86 @@
+/* Global styles */
+body, html {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App Component Styles */
+.app-layout {
+  display: flex;
+  height: calc(100vh - 56px);
+  /* margin-top: 56px; */
+  background-color: #354936;
+}
+
+.chat-container {
+  flex: 0 0 40vw; /* Use flex shorthand to avoid growth and shrinking, strictly 40% */
+  /* border-right: 1px solid #ccc; */
+  overflow: hidden;
+  /* height: 100%; Ensure it fills the parent's height */
+  max-height: 83vh;
+
+}
+
+.board-container {
+  flex: 1; /* Takes up remaining space */
+  background-color: #354936;
+  max-height: 85vh;
+}
+
+/* MainBoard Component Styles */
+.mainboard-wrapper {
+  background-color: #354936;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 15px;
+}
+
+.mainboard-container {
+  background-color: #354936;
+  display: flex; /* Ensure it uses flex for direct children which are pin wrappers */
+  flex-wrap: wrap; /* Allows wrapping of pins */
+  gap: 5px; /* Replaces column-gap for spacing around items */
+  justify-content: start; /* Aligns items at the start of the container */
+  /* padding: 10px; Adds some padding inside the container */
+  width: 100%; /* Ensures it fills its parent */
+  overflow-y: auto; /* Adds scrolling if content is too tall */
+}
+
+/* Pin Component Styles */
+/* Pin Component Styles */
+.pin-wrapper {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: calc(100% / 5 - 30px);
+  margin: 5px;
+  transition: all 0.3s ease; /* Smooth transition for size changes */
+}
+
+.pin-wrapper:hover {
+  transform: scale(1.71); /* Increase size on hover */
+  z-index: 10; /* Ensure it scales above other content */
+}
+
+.pin-container {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.pin-container.glow {
+  box-shadow: 0 0 20px #48abe0; /* Example glow effect */
+  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the glow effect */
+}
+
+
+.pin-container img {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
