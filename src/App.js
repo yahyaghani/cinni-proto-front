@@ -64,9 +64,11 @@ const onPinClick = useCallback((imageUrl) => {
 const updatePinsWithNewData = (newPins) => {
   setPins(prevPins => {
       // Assuming you want to replace the last N entries with new pins
-      let updatedPins = [...prevPins];
-      updatedPins.splice(-newPins.length, newPins.length, ...newPins);
-      return updatedPins;
+      // let updatedPins = [...prevPins];
+      // updatedPins.splice(-newPins.length, newPins.length, ...newPins);
+      // return updatedPins;
+      return [...newPins, ...prevPins];
+
   });
 };
 

@@ -11,7 +11,7 @@ body, html {
 /* App Component Styles */
 .app-layout {
   display: flex;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 71px);
   /* margin-top: 56px; */
   background-color: #354936;
 }
@@ -21,14 +21,14 @@ body, html {
   /* border-right: 1px solid #ccc; */
   overflow: hidden;
   /* height: 100%; Ensure it fills the parent's height */
-  max-height: 83vh;
+  max-height: 87vh;
 
 }
 
 .board-container {
   flex: 1; /* Takes up remaining space */
   background-color: #354936;
-  max-height: 85vh;
+  max-height: 84vh;
 }
 
 /* MainBoard Component Styles */
