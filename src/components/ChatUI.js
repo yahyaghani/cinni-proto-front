@@ -24,6 +24,22 @@ const ChatUI = () => {
     const [inputValue, setInputValue] = useState('');
     const [placeholders, setPlaceholders] = useState(initialPlaceholders);
 
+    const sendMessage = (text) => {
+        if (text.trim() && sessionID) {
+            socketRef.current.emit('chat-query', { session_id: sessionID, message: text });
+            setMessages(prev => [...prev, { id: prev.length + 1, nickName: 'Me', message: text, type: 'me' }]);
+        }
+    };
+
+    const handlePlaceholderClick = placeholder => {
+        setInputValue(placeholder);
+    };
+
+    const getAnimationName = () => {
+        const animations = ['float1', 'float2', 'float3'];
+        return animations[Math.floor(Math.random() * animations.length)];
+    };
+
     useEffect(() => {
         socketRef.current = socketIOClient('http://localhost:5000', { transports: ['websocket'] });
 
@@ -54,16 +70,6 @@ const ChatUI = () => {
         };
     }, []);
 
-    const sendMessage = (text) => {
-        if (text.trim() && sessionID) {
-            socketRef.current.emit('chat-query', { session_id: sessionID, message: text });
-            setMessages(prev => [...prev, { id: prev.length + 1, nickName: 'Me', message: text, type: 'me' }]);
-        }
-    };
-
-    const handlePlaceholderClick = placeholder => {
-        setInputValue(placeholder);
-    };
 
     return (
         <div id="chat" className="--dark-theme">
