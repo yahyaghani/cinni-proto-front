@@ -6,7 +6,7 @@ import ChatUI from './components/ChatUI';
 import productsData from './api/products.json';  // Assuming static import of JSON
 import ImageUploader from './components/ImageUploader';
 import { SessionProvider, useSession } from './context/SessionContext';
-import { PinsProvider } from './context/PinsContext';
+import { PinsProvider, usePins } from './context/PinsContext';
 
 
 function App() {
@@ -15,16 +15,16 @@ function App() {
   const [sessionID, setSessionID] = useState(null);
 
   useEffect(() => {
+    console.log("Fetching initial pins...");
     const loadedPins = Object.values(productsData).slice(2, 17).map(product => ({
       id: product.skuId,
       image: product.image,
       name: product.name,
       url: product.url
     }));
-    console.log("Loaded pins:", loadedPins);  // Check if pins are loaded correctly
+    console.log("Loaded pins:", loadedPins);
     setPins(loadedPins);
-  }, []);
-
+}, []);
 
 const onPinClick = (imageUrl) => {
   fetch('/api/fetch-pins', {

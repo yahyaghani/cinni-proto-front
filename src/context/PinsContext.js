@@ -1,16 +1,22 @@
 // context/PinsContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext,useEffect, useState } from 'react';
 
 const PinsContext = createContext();
 
 export const usePins = () => useContext(PinsContext);
 
 export const PinsProvider = ({ children, initialPins }) => {
-  const [pins, setPins] = useState(initialPins || []);
+  const [pins, setPins] = useState([]);
+
+  useEffect(() => {
+    if (initialPins) {
+      setPins(initialPins);
+    }
+  }, [initialPins]);  // React to changes in initialPins
 
   return (
-      <PinsContext.Provider value={{ pins, setPins }}>
-          {children}
-      </PinsContext.Provider>
+    <PinsContext.Provider value={{ pins, setPins }}>
+      {children}
+    </PinsContext.Provider>
   );
 };
