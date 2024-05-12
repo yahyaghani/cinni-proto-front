@@ -31,24 +31,26 @@ function App() {
 }, []);
 
 const onPinClick = useCallback((imageUrl) => {
-  console.log("Sending:", imageUrl, sessionID);  // Log data being sent
+  console.log("Sending:", imageUrl, sessionID);
 
   fetch('/api/fetch-pins', {
       method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ image: imageUrl, session_id: sessionID })  // Include sessionID in the request
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: imageUrl, session_id: sessionID })
   })
   .then(response => response.json())
-  .then(newPinsData => {
-      if (newPinsData && newPinsData.urls && newPinsData.urls.length > 0) {
-          const newPins = newPinsData.urls.map(url => ({
-              id: url,  // Assuming the URLs are unique and can serve as IDs
-              image: url,
-              name: 'Updated Pin',
-              url: url
-          }));
+  .then(data => {
+      if (data && data.productIds && data.productIds.length > 0) {
+          // Filter or map the product details from productsData based on the received IDs
+          const newPins = data.productIds.map(id => {
+              const product = productsData[id];
+              return {
+                  id: id,
+                  image: product.image,
+                  name: product.name,
+                  url: product.url
+              };
+          });
           updatePinsWithNewData(newPins);
       } else {
           console.log('No new pins or invalid data received');
@@ -57,7 +59,7 @@ const onPinClick = useCallback((imageUrl) => {
   .catch(error => {
       console.error('Error fetching new pins:', error);
   });
-}, [sessionID]);  // Dependency on sessionID to ensure update
+}, [sessionID]);
 
 const updatePinsWithNewData = (newPins) => {
   setPins(prevPins => {
