@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import './styles.css';
 import Header from './components/Header';
 import MainBoard from './components/MainBoard';
@@ -12,7 +12,11 @@ import { PinsProvider, usePins } from './context/PinsContext';
 function App() {
   const [pins, setPins] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sessionID, setSessionID] = useState(null);
+  const { sessionID } = useSession();  // Use sessionID from context
+  
+  useEffect(() => {
+    console.log("Session ID updated in App.js:", sessionID);
+}, [sessionID]);
 
   useEffect(() => {
     console.log("Fetching initial pins...");
@@ -26,7 +30,9 @@ function App() {
     setPins(loadedPins);
 }, []);
 
-const onPinClick = (imageUrl) => {
+const onPinClick = useCallback((imageUrl) => {
+  console.log("Sending:", imageUrl, sessionID);  // Log data being sent
+
   fetch('/api/fetch-pins', {
       method: 'POST',
       headers: {
@@ -51,7 +57,7 @@ const onPinClick = (imageUrl) => {
   .catch(error => {
       console.error('Error fetching new pins:', error);
   });
-};
+}, [sessionID]);  // Dependency on sessionID to ensure update
 
 const updatePinsWithNewData = (newPins) => {
   setPins(prevPins => {
@@ -118,7 +124,7 @@ const getNewPins = () => {
 }
 
 return (
-  <SessionProvider>
+    
     <PinsProvider initialPins={pins}>
       <div className="app">
         <Header />
@@ -132,7 +138,6 @@ return (
         </div>
       </div>
     </PinsProvider>
-  </SessionProvider>
 );
 }
 

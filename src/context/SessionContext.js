@@ -7,7 +7,10 @@ export const useSession = () => useContext(SessionContext);
 export const SessionProvider = ({ children }) => {
     const [sessionID, setSessionID] = useState(null);
 
+    console.log("SessionProvider mounted, sessionID:", sessionID);
+
     const updateSessionID = (id) => {
+        console.log("Updating session ID:", id);
         setSessionID(id);
     };
 
