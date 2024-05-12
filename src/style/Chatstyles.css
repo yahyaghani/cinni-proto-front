@@ -62,7 +62,7 @@
 
 #chat {
     background: #354936;
-    top: 5vh;
+    top: 0vh;
     color:white;
     margin: 1vh auto;
     padding: 1vh;
@@ -192,12 +192,13 @@
     justify-content: center;
     /* padding-bottom: 10px; */
     gap: 10px;
-    margin: 0 20px; /* Adds horizontal padding to align with chat bubbles */
+    margin: 0 3px; /* Adds horizontal padding to align with chat bubbles */
     margin-top:4px;
+    
 }
 
 .chat__placeholder-bubble {
-    padding: 8px 16px;
+    padding: 8px 3px;
     background-color: #83af9b;
     color: #774f38;
     border-radius: 20px;
