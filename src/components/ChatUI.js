@@ -44,7 +44,9 @@ const ChatUI = () => {
     };
 
     useEffect(() => {
-        socketRef.current = socketIOClient('http://localhost:5000', { transports: ['websocket'] });
+        // socketRef.current = socketIOClient('http://localhost:5000', { transports: ['websocket'] });
+        // cloud version // 
+        socketRef.current = socketIOClient('https://cinni.yahyaghani.com', { path: '/socket.io/' });
 
         socketRef.current.on('connect', () => {
             console.log('WebSocket connected');
