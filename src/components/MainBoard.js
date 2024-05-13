@@ -13,19 +13,18 @@ function MainBoard({ onPinClick, isLoading }) {
     }, [pins]);
 
     useEffect(() => {
-        // Set up rotation interval only if isRotating is true
-        if (isRotating) {
-            const intervalId = setInterval(() => {
-                setRotatingPins(prevPins => {
-                    const [first, ...rest] = prevPins;
-                    return [...rest, first]; // Rotate pins
-                });
-            }, 3000); // Rotate every 5 seconds
-
-            return () => clearInterval(intervalId); // Clean up the interval
-        }
-    }, [isRotating, rotatingPins]); // Depend on isRotating and rotatingPins
-
+      let intervalId;
+      if (isRotating) {
+          intervalId = setInterval(() => {
+              setRotatingPins(prevPins => {
+                  const [first, ...rest] = prevPins;
+                  return [...rest, first]; // Rotate pins
+              });
+          }, 3000); // Changed to rotate every 3 seconds as per your setup
+      }
+      return () => clearInterval(intervalId); // Always clear the interval
+  }, [isRotating, rotatingPins]); // Depend on isRotating and rotatingPins
+  
     return (
         <div className="mainboard-wrapper">
             <div className="mainboard-container">

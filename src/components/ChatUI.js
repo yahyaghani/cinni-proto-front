@@ -70,21 +70,29 @@ const ChatUI = () => {
             setPins(prevPins => {
                 const detailedPins = data.pins.map(pinId => {
                     const product = productsData[pinId];
-                    return product ? {
-                        ...product,
-                        id: pinId,
-                        glow: true  // Mark new pins with glow to handle special effect
-                    } : null;
-                }).filter(product => product && !prevPins.some(p => p.id === product.id));  // Remove nulls and duplicates
-                
-                const updatedPins = [...detailedPins, ...prevPins].slice(0, 17);  // Limit to 17 pins
+                    if (product) {
+                        return {
+                            ...product,
+                            id: pinId,
+                            glow: true // Mark new pins with glow
+                        };
+                    }
+                    return null;
+                }).filter(product => product && !prevPins.some(p => p.id === product.id));
+        
+                // Randomize the array of pins
+                const shuffledPins = [...detailedPins, ...prevPins].sort(() => 0.5 - Math.random());
+        
+                // Slice to keep only the latest 17 pins
+                const updatedPins = shuffledPins.slice(0, 17);
                 return updatedPins.map(pin => ({
                     ...pin,
-                    glow: detailedPins.some(p => p.id === pin.id)  // Apply glow only to new pins
+                    glow: detailedPins.some(p => p.id === pin.id) // Apply glow only to new pins
                 }));
             });
+            setIsRotating(false); // Stop rotation
         });
-                        
+                                        
         return () => {
             if (socketRef.current) {
                 socketRef.current.disconnect();
@@ -104,7 +112,7 @@ const ChatUI = () => {
                             )}
                         </div>
                         <div className="chat__conversation-board__message__context">
-                            <span className={`chat__conversation-board__message__bubble ${msg.type === 'me' ? 'me' : 'system'}`}>{msg.message}</span>
+                            <p className={`chat__conversation-board__message__bubble ${msg.type === 'me' ? 'me' : 'system'}`}>{msg.message}</p>
                         </div>
                     </div>
                 ))}
@@ -134,6 +142,7 @@ const ChatUI = () => {
             </div>
         </div>
     );
+    
 };
 
 export default ChatUI;

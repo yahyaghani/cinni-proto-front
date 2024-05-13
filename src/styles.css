@@ -74,10 +74,19 @@ body, html {
 }
 
 .pin-container.glow {
-  box-shadow: 1 2 20px #EA613A; /* Example glow effect */
-  transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the glow effect */
+  box-shadow: 0 10px 20px #EA613A; /* Example static glow effect */
+  transition: box-shadow 0.3s ease-in-out; /* Transition for changes in box-shadow */
+  animation: pulseGlow 1s infinite alternate ease-in-out; /* Apply the pulseGlow animation */
 }
 
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 10px -10px #aef4af;
+  }
+  to {
+    box-shadow: 0 0 20px 10px #aef4af;
+  }
+}
 
 .pin-container img {
   width: 100%;
