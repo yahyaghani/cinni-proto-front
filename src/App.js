@@ -31,8 +31,7 @@ function App() {
 }, []);
 
 const onPinClick = useCallback((imageUrl) => {
-  console.log("Sending:", imageUrl, sessionID);
-
+  setLoading(true);
   fetch('/api/fetch-pins', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -40,35 +39,33 @@ const onPinClick = useCallback((imageUrl) => {
   })
   .then(response => response.json())
   .then(data => {
+      setLoading(false);
       if (data && data.productIds && data.productIds.length > 0) {
-          // Filter or map the product details from productsData based on the received IDs
           const newPins = data.productIds.map(id => {
               const product = productsData[id];
               return {
+                  ...product,
                   id: id,
-                  image: product.image,
-                  name: product.name,
-                  url: product.url
+                  glow: true  // Mark new pins with glow to handle special effect
               };
-          });
+          }).filter(newPin => !pins.some(pin => pin.id === newPin.id));  // Remove duplicates
+
           updatePinsWithNewData(newPins);
       } else {
           console.log('No new pins or invalid data received');
       }
   })
   .catch(error => {
+      setLoading(false);
       console.error('Error fetching new pins:', error);
   });
-}, [sessionID]);
+}, [sessionID, pins]);
+
 
 const updatePinsWithNewData = (newPins) => {
   setPins(prevPins => {
-      // Assuming you want to replace the last N entries with new pins
-      // let updatedPins = [...prevPins];
-      // updatedPins.splice(-newPins.length, newPins.length, ...newPins);
-      // return updatedPins;
-      return [...newPins, ...prevPins];
-
+      const updatedPins = [...newPins, ...prevPins].slice(0, 17);  // Limit to 17 pins
+      return updatedPins.map(pin => ({ ...pin, glow: newPins.some(p => p.id === pin.id) }));  // Apply glow only to new pins
   });
 };
 
@@ -137,7 +134,7 @@ return (
             <ChatUI />
           </div>
           <div className="board-container">
-            <MainBoard onPinClick={onPinClick}/>
+          <MainBoard onPinClick={onPinClick} isLoading={loading}/>
           </div>
         </div>
       </div>

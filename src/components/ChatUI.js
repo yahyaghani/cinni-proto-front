@@ -3,6 +3,8 @@ import socketIOClient from 'socket.io-client';
 import { useSession } from '../context/SessionContext';
 import '../styles.css';
 import '../style/Chatstyles.css';
+import { usePins } from '../context/PinsContext'; // Import usePins hook
+import productsData from '../api/products.json';
 
 const ChatUI = () => {
     const initialMessage = {
@@ -23,6 +25,7 @@ const ChatUI = () => {
     const socketRef = useRef(null);
     const [inputValue, setInputValue] = useState('');
     const [placeholders, setPlaceholders] = useState(initialPlaceholders);
+    const { setPins, setIsRotating } = usePins(); // Use setIsRotating from context
 
     const sendMessage = (text) => {
         if (text.trim() && sessionID) {
@@ -62,13 +65,32 @@ const ChatUI = () => {
                 setPlaceholders(data.placeholders);
             }
         });
-
+        socketRef.current.on('new-pins', (data) => {
+            console.log("Received new pins:", data.pins);
+            setPins(prevPins => {
+                const detailedPins = data.pins.map(pinId => {
+                    const product = productsData[pinId];
+                    return product ? {
+                        ...product,
+                        id: pinId,
+                        glow: true  // Mark new pins with glow to handle special effect
+                    } : null;
+                }).filter(product => product && !prevPins.some(p => p.id === product.id));  // Remove nulls and duplicates
+                
+                const updatedPins = [...detailedPins, ...prevPins].slice(0, 17);  // Limit to 17 pins
+                return updatedPins.map(pin => ({
+                    ...pin,
+                    glow: detailedPins.some(p => p.id === pin.id)  // Apply glow only to new pins
+                }));
+            });
+        });
+                        
         return () => {
             if (socketRef.current) {
                 socketRef.current.disconnect();
             }
         };
-    }, []);
+    }, [setPins]);
 
 
     return (

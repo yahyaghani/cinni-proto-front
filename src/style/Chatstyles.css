@@ -173,6 +173,7 @@
 .chat__conversation-board__message-container.other {
     text-align: left;
     justify-content: flex-start; /* Aligns content to the left */
+    line-height:30px;
 }
 
 .chat__conversation-board__message-container.me .chat__conversation-board__message__context {
@@ -230,12 +231,14 @@
     border-radius: 20px;
     cursor: pointer;
     font-family: 'Kalam', cursive;
-    animation: float 2s ease-in-out infinite;
+    animation: float 5s ease-in-out infinite;
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 1px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); */
+    box-shadow: 2px 2px 4px rgb(234 97 58);
     user-select: none;
+    text-align:center;
 }
 
 .chat__conversation-panel {

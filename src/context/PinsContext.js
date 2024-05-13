@@ -7,6 +7,7 @@ export const usePins = () => useContext(PinsContext);
 
 export const PinsProvider = ({ children, initialPins }) => {
   const [pins, setPins] = useState([]);
+  const [isRotating, setIsRotating] = useState(true);
 
   useEffect(() => {
     if (initialPins) {
@@ -15,7 +16,7 @@ export const PinsProvider = ({ children, initialPins }) => {
   }, [initialPins]);  // React to changes in initialPins
 
   return (
-    <PinsContext.Provider value={{ pins, setPins }}>
+    <PinsContext.Provider value={{ pins, setPins, isRotating, setIsRotating }}>
       {children}
     </PinsContext.Provider>
   );
